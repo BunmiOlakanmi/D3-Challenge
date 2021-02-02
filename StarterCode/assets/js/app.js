@@ -130,8 +130,7 @@ chartGroup.append("g")
 
   // Add an on mouseout    
     .on("mouseout", function(data) {
-        toolTip.hide(data)
-        .duration(10000);
+        toolTip.hide(data);
     });
 
   }).catch(function(error) {
