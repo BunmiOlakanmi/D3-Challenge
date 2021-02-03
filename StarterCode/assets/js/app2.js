@@ -108,16 +108,15 @@ function updateToolTipX(chosenXAxis, circlesGroup) {
       return (`${d.state}<br>${d.abbr} ${d[chosenXAxis]}`);
     });
 
-  circlesGroup.call(toolTip);
+    circlesGroup.call(toolTip);
 
-  circlesGroup.on("mouseover", function(data) {
-    toolTip.show(data);
-  })
+    circlesGroup.on("mouseover", function(data) {
+      toolTip.show(data, this);
+    })
     // onmouseout event
     .on("mouseout", function(data, index) {
       toolTip.hide(data);
     });
-
   return circlesGroup;
 }
 
@@ -274,9 +273,9 @@ d3.csv("assets/data/data.csv").then(function(Data) {
     .classed("axis-text", true)
     .text("Obese(%)");
 // updateToolTip function above csv import
-var circlesGroupX = updateToolTip(chosenXAxis, circlesGroup);
+var circlesGroupX = updateToolTipX(chosenXAxis, circlesGroup);
 // updateToolTip function above csv import
-var circlesGroupY = updateToolTip(chosenYAxis, circlesGroup);
+var circlesGroupY = updateToolTipY(chosenYAxis, circlesGroup);
 
 // x axis labels event listener
 labelsGroup.selectAll("text")
@@ -350,121 +349,73 @@ labelsGroup.selectAll("text")
     }
   }
 
-// changes classes to change bold text for y-axis
-if (chosenYAxis === "healthcare") {
-  healthcareLabel
-    .classed("active", true)
-    .classed("inactive", false);
-  smokesLabel
-    .classed("active", false)
-    .classed("inactive", true);
-  obeseLabel
-    .classed("active", false)
-    .classed("inactive", true);
-}
-else if (chosenYAxis === "smokes") {
-  smokesLabel
-    .classed("active", true)
-    .classed("inactive", false);
-  healthcareLabel
-    .classed("active", false)
-    .classed("inactive", true);
-  obeseLabel
-    .classed("active", false)
-    .classed("inactive", true);
-}
 else {
-  obeseLabel
-    .classed("active", true)
-    .classed("inactive", false);
-  healthcareLabel
-    .classed("active", false)
-    .classed("inactive", true);
-  smokesLabel
-    .classed("active", false)
-    .classed("inactive", true);
-}
+    // replaces chosenXAxis with value
+    chosenYAxis = value;
+    
+    // console.log(chosenYAxis)
+
+    // functions here found above csv import
+    // updates y scale for new data
+    yLinearScale = yScale(Data, chosenYAxis);
+
+    // updates y axis with transition
+    yAxis = renderYAxes(yLinearScale, yAxis);
+
+    // updates circles with new y values
+    circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
+
+    // updates tooltips with new info
+    circlesGroupY = updateToolTipY(chosenYAxis, circlesGroup);
+// changes classes to change bold text for y-axis
+    if (chosenYAxis === "healthcare") {
+    healthcareLabel
+        .classed("active", true)
+        .classed("inactive", false);
+    smokesLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    obeseLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    circleLabels.text(function(d) {
+        return "abbr";
+    })
+        .classed("stateText", true)
+    }
+    else if (chosenYAxis === "smokes") {
+    smokesLabel
+        .classed("active", true)
+        .classed("inactive", false);
+    healthcareLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    obeseLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    circleLabels.text(function(d) {
+        return "abbr";
+    })
+        .classed("stateText", true)
+    }
+    else {
+    obeseLabel
+        .classed("active", true)
+        .classed("inactive", false);
+    healthcareLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    smokesLabel
+        .classed("active", false)
+        .classed("inactive", true);
+    circleLabels.text(function(d) {
+        return "abbr";
+    })
+        .classed("stateText", true)
+    }
+    }
 
 });
 }).catch(function(error) {
   console.log(error);
 });
-
-
-
-//   // Create circles
-//   var circlesGroup = chartGroup.selectAll("Circle")
-//     .data(Data)
-//     .enter()
-//     .append("circle")
-//     .attr("cx", d => xLinearScale(d.poverty))
-//     .attr("cy", d => yLinearScale(d.healthcare))
-//     .attr("r", "15")
-//     .attr("stroke-chartWidth", true)
-//     .classed("stateCircle", true)
-    
-// // Create axis functions
-// var bottomAxis = d3.axisBottom(xLinearScale);
-// var leftAxis = d3.axisLeft(yLinearScale);
-
-// // Append axes to the chart
-// chartGroup.append("g")
-//   .attr("transform", `translate(0, ${chartHeight})`)
-//   .call(bottomAxis);
-
-// chartGroup.append("g")
-//   .call(leftAxis);
-//     var circleLabels = chartGroup.selectAll(null).data(Data).enter().append("text");
-
-//     circleLabels
-//       .attr("x", function(d) {
-//         return xLinearScale(d.poverty);
-//       })
-//       .attr("y", function(d) {
-//         return yLinearScale(d.healthcare);
-//       })
-//       .text(function(d) {
-//         return d.abbr;
-//       })
-//       .classed("stateText", true)
-       
-//     // Create axes labels
-//     chartGroup.append("text")
-//       .attr("transform", "rotate(-90)")
-//       .attr("y", 0 - chartMargin.left)
-//       .attr("x", 0 - (chartHeight / 2))
-//       .attr("dy", "1em")
-//       .attr("class", "axisText")
-//       .text("Lacks Healthcare(%)");
-//       //.text("Smokes (%)")
-//       //.text("Obese(%")
-//     chartGroup.append("text")
-//        .attr("transform", `translate(${chartWidth/2}, ${chartHeight + chartMargin.top -10})`)
-//       .attr("class", "axisText")
-//       .text("In Poverty (%)")
-//       //.text("Age (Median")
-//       //.text("Household Income (Median)");
-  
-
-//   var toolTip = d3.tip()
-//     .attr("class", "d3-tip")
-//     .offset([80, -70])
-//     .style("position", "absolute")
-//     .style("pointer-events", "none")
-//     .html(function(d) {
-//       return (`${d.state}<br>Population In Poverty (%): ${d.poverty}<br>Lacks Healthcare (%): ${d.healthcare}`)
-//     });      
-
-//     chartGroup.call(toolTip);   
-    
-//   // Add an onmouseover event to display a tooltip   
-//     circlesGroup.on("mouseover", function(data) {
-//         toolTip.show(data, this);
-//     })
-
-//   // Add an on mouseout    
-//     .on("mouseout", function(data) {
-//         toolTip.hide(data);
-//     });
-
-  
