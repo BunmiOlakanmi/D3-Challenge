@@ -174,16 +174,6 @@ d3.csv("assets/data/data.csv").then(function(Data) {
   var xLinearScale = xScale(Data, chosenXAxis);
   var yLinearScale = yScale(Data, chosenYAxis);
 
-  // Create scale functions
-  // var xLinearScale = d3.scaleLinear()
-  //   .domain([0, (d3.max(Data, d => d.poverty))])
-  //   .range([0, chartWidth]);
-
-  // var yLinearScale = d3.scaleLinear()
-  // .domain([0, (d3.max(Data, d => d.healthcare))])
-  // // .domain([0, d3.max(Data, d => d.healthcare)])
-  //   .range([chartHeight, 0]);
-
   // Create initial axis functions
   var bottomAxis = d3.axisBottom(xLinearScale);
   var leftAxis = d3.axisLeft(yLinearScale);
