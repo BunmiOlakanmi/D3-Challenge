@@ -29,9 +29,19 @@ Stage 1:
   * I created and situated axes and labels to the left and bottom of the chart.
            ![4-scatter](Images/4-scatter.jpg)
 
-    * Note: I use `python -m http.server` to run the visualization, and the page is hosted at `localhost:8000` in the web browser.
+    
 Stage 2:   
   * I placed additional labels on both left and bottom axes of the scatter plots. There is click event on the bottom axis, so users can decide on which data to display. Users can view data for healthcare vs. poverty, healthcare vs. age and healthcare vs. income.
   ![7-animated-scatter](Images/7-animated-scatter.gif)
   * I added tooltips to the circles, and each tooltip is displayed with the data that the user has selected.
     ![8-tooltip](Images/8-tooltip.gif)
+### Files used in the project
+1. `StarterCode` folder contains the `index.html` file and the `assets` that houses all the codes used in the project.
+2. `index.html` is the html file that renders the visualization on the web browser.
+3. `assets` folder contains `css`, `data` and `js` folders.
+4. `css` folder contains the stylesheets used to add style and aesthetics to our webpage.
+5. `data` folder contains `data.csv` file, which was used in our analysis and for loading the charts.
+6. `js` folder contains two JavaScript files `app.js` and `app2.js`.
+7. `app.js` is used to run the stage 1 of this project, while `app2.js` is used to execute stage 2 of this project.
+
+* Note: I use `python -m http.server` to run the visualization, and the page is hosted at `localhost:8000` in the web browser.
